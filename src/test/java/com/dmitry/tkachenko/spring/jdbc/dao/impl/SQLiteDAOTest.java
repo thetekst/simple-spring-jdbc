@@ -4,7 +4,6 @@ import com.dmitry.tkachenko.spring.jdbc.dao.interfaces.Mp3DAO;
 import com.dmitry.tkachenko.spring.jdbc.dao.objects.Mp3;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.UncategorizedSQLException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ public class SQLiteDAOTest {
 
     public SQLiteDAOTest() {
         ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
-        mp3DAO = (SQLiteDAO) context.getBean("sqliteDAO");
+        mp3DAO = context.getBean(SQLiteDAO.class);
     }
 
     @org.testng.annotations.Test
