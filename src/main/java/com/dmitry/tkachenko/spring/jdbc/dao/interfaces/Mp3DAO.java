@@ -10,7 +10,7 @@ public interface Mp3DAO {
 
     int insert(Mp3 mp3);
 
-    void insert(List<Mp3> mp3List);
+    int insert(List<Mp3> mp3List);
 
     void  delete(int id);
 

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -42,10 +43,13 @@ public class SQLiteDAO implements Mp3DAO {
         return insertMp3.executeAndReturnKeyHolder(params).getKey().intValue();
     }
 
-    public void insert(List<Mp3> mp3List) {
-        for (Mp3 mp3 : mp3List) {
-            insert(mp3);
-        }
+    public int insert(List<Mp3> mp3List) {
+//        String sql = "insert into mp3 (name, author) VALUES (:name, :author)";
+        String sql = "insert into mp3 (name, author) VALUES (:name, :author)";
+        SqlParameterSource[] batch = SqlParameterSourceUtils
+                .createBatch(mp3List.toArray());
+
+        return jdbcTemplate.batchUpdate(sql, batch).length;
     }
 
     public void delete(Mp3 mp3) {

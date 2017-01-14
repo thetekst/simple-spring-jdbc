@@ -35,7 +35,8 @@ public class SQLiteDAOTest {
 
         mp3List.add(track1);
         mp3List.add(track2);
-        mp3DAO.insert(mp3List);
+        int keys = mp3DAO.insert(mp3List);
+        System.out.println(keys);
     }
 
     @org.testng.annotations.Test
