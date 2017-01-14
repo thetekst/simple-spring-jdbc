@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
@@ -23,23 +23,23 @@ import java.util.List;
 @Component("sqliteDAO")
 public class SQLiteDAO implements Mp3DAO {
     private NamedParameterJdbcTemplate jdbcTemplate;
+    private DataSource dataSource;
+    private SimpleJdbcInsert insertMp3;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.insertMp3 = new SimpleJdbcInsert(dataSource)
+                .withTableName("mp3").usingColumns("name", "author")
+                .usingGeneratedKeyColumns("id");
     }
 
     public int insert(Mp3 mp3) {
-        String sql = "insert into mp3 (name, author) VALUES (:name, :author)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", mp3.getName());
         params.addValue("author", mp3.getAuthor());
 
-        jdbcTemplate.update(sql, params, keyHolder);
-
-        return keyHolder.getKey().intValue();
+        return insertMp3.executeAndReturnKeyHolder(params).getKey().intValue();
     }
 
     public void insert(List<Mp3> mp3List) {
