@@ -23,7 +23,8 @@ public class SQLiteDAOTest {
     @org.testng.annotations.Test
     public void insertValid() {
         Mp3 mp3 = new Mp3("track-04", "Muse");
-        mp3DAO.insert(mp3);
+        int key = mp3DAO.insert(mp3);
+        System.out.println(key);
     }
 
     @org.testng.annotations.Test

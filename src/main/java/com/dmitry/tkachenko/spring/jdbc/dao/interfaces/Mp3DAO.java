@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface Mp3DAO {
 
-    void insert(Mp3 mp3);
+    int insert(Mp3 mp3);
 
     void insert(List<Mp3> mp3List);
 
