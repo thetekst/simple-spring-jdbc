@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -24,7 +23,6 @@ import java.util.List;
 @Component("sqliteDAO")
 public class SQLiteDAO implements Mp3DAO {
     private NamedParameterJdbcTemplate jdbcTemplate;
-    private DataSource dataSource;
     private SimpleJdbcInsert insertMp3;
 
     @Autowired
@@ -44,7 +42,6 @@ public class SQLiteDAO implements Mp3DAO {
     }
 
     public int insert(List<Mp3> mp3List) {
-//        String sql = "insert into mp3 (name, author) VALUES (:name, :author)";
         String sql = "insert into mp3 (name, author) VALUES (:name, :author)";
         SqlParameterSource[] batch = SqlParameterSourceUtils
                 .createBatch(mp3List.toArray());
